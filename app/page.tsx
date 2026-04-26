@@ -32,16 +32,16 @@ export default function Home() {
       const data: { message?: string; error?: string } = await response.json();
 
       if (!response.ok) {
-        setError(data.error ?? "모니터 등록 중 오류가 발생했습니다.");
+        setError(data.error ?? "An error occurred while registering the monitor.");
         return;
       }
 
-      setMessage(data.message ?? "모니터가 등록되었습니다.");
+      setMessage(data.message ?? "Monitoring started successfully.");
       setEmail("");
       setKeywords("");
       setSlackWebhook("");
     } catch {
-      setError("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      setError("A network error occurred. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -54,7 +54,7 @@ export default function Home() {
           HN Monitor
         </h1>
         <p className="mt-3 text-zinc-600">
-          원하는 키워드가 Hacker News에 올라오면 Slack으로 알림을 받으세요.
+          Get Slack alerts when your target keywords appear on Hacker News.
         </p>
 
         <form
@@ -82,7 +82,7 @@ export default function Home() {
                 htmlFor="keywords"
                 className="mb-2 block text-sm font-medium"
               >
-                Keywords
+                Keywords (comma separated)
               </label>
               <textarea
                 id="keywords"
@@ -94,7 +94,7 @@ export default function Home() {
                 className="w-full rounded-lg border border-zinc-300 px-3 py-2 outline-none transition focus:border-zinc-500"
               />
               <p className="mt-1 text-xs text-zinc-500">
-                쉼표(,) 또는 줄바꿈으로 여러 키워드를 입력할 수 있습니다.
+                Enter one or more keywords separated by commas.
               </p>
             </div>
 
@@ -122,7 +122,7 @@ export default function Home() {
             disabled={isSubmitting}
             className="mt-6 w-full rounded-lg bg-zinc-900 px-4 py-2 font-medium text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:bg-zinc-400"
           >
-            {isSubmitting ? "등록 중..." : "모니터 등록"}
+            {isSubmitting ? "Starting..." : "Start Monitoring"}
           </button>
 
           {message ? (
