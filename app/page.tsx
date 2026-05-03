@@ -63,7 +63,7 @@ export default function Home() {
         .hero h1{font-family:'Orbitron',monospace;font-size:clamp(40px,8vw,100px);font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:8px;}
         .line1{background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--magenta) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;}
         .line2{background:linear-gradient(135deg,var(--violet) 0%,var(--magenta) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;}
-        .hero-sub{font-size:20px;font-weight:300;color:rgba(255,255,255,0.5);max-width:600px;margin:32px auto 48px;line-height:1.7;letter-spacing:1px;}
+        .hero-sub{font-size:20px;font-weight:300;color:rgba(255,255,255,0.5);max-width:620px;margin:32px auto 48px;line-height:1.7;letter-spacing:1px;}
         .hero-sub strong{color:var(--cyan);font-weight:600;}
         .hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
         .btn-primary{font-family:'Orbitron',monospace;font-size:12px;letter-spacing:3px;padding:16px 40px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:var(--bg);text-decoration:none;font-weight:700;text-transform:uppercase;transition:all 0.3s;}
@@ -101,12 +101,17 @@ export default function Home() {
         .slack-time{font-size:11px;color:rgba(255,255,255,0.3);}
         .alert-badge{display:inline-block;background:rgba(255,0,0,0.15);border:1px solid rgba(255,60,60,0.4);color:#ff6060;font-size:11px;letter-spacing:2px;padding:3px 10px;font-family:'Orbitron',monospace;margin-bottom:12px;}
         .slack-field{display:flex;gap:12px;margin-bottom:8px;font-size:14px;}
-        .slack-key{color:rgba(255,255,255,0.4);min-width:100px;}
+        .slack-key{color:rgba(255,255,255,0.4);min-width:120px;}
         .slack-val{color:#fff;}
         .slack-val.negative{color:#ff6060;}
         .slack-val.high{color:#ffaa00;}
         .slack-val.link{color:var(--cyan);}
+        .score-bar{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:8px;}
+        .score-label{color:rgba(255,255,255,0.4);min-width:120px;}
+        .score-fill{color:var(--magenta);}
+        .score-num{color:#fff;font-family:'Orbitron',monospace;font-size:12px;}
         .slack-draft{margin-top:16px;padding:16px;background:rgba(0,245,255,0.04);border-left:2px solid var(--cyan);font-size:14px;color:rgba(255,255,255,0.6);line-height:1.6;}
+        .action-now{margin-top:12px;padding:10px 16px;background:rgba(255,0,0,0.1);border:1px solid rgba(255,60,60,0.3);color:#ff6060;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;display:inline-block;}
         .pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;max-width:900px;margin:0 auto;}
         .plan{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);padding:48px 36px;transition:all 0.3s;position:relative;}
         .plan.featured{border-color:rgba(0,245,255,0.3);background:rgba(0,245,255,0.03);}
@@ -141,24 +146,24 @@ export default function Home() {
         <div className="orb orb-1"></div>
         <div className="orb orb-2"></div>
         <div className="orb orb-3"></div>
-        <div className="hero-badge">● LIVE MONITORING ACTIVE</div>
+        <div className="hero-badge">⚡ RESPOND BEFORE IT GOES VIRAL</div>
         <h1>
-          <span className="line1">NEVER MISS</span>
-          <span className="line2">A MENTION</span>
+          <span className="line1">ACT BEFORE</span>
+          <span className="line2">THE DAMAGE</span>
         </h1>
         <p className="hero-sub">
-          AI-powered intelligence that watches <strong>Hacker News</strong> 24/7.
-          When your brand gets mentioned, you get a Slack alert with{" "}
-          <strong>sentiment analysis</strong> and a ready-to-send reply.
+          <strong>HN threads move fast.</strong> A negative post can hit 200 upvotes in 30 minutes.
+          We detect it early, score the risk, and give you a{" "}
+          <strong>founder-ready reply</strong> — before it spreads.
         </p>
         <div className="hero-actions">
-          <a href="/register" className="btn-primary">Start Monitoring Free</a>
-          <a href="#demo" className="btn-secondary">See It Live</a>
+          <a href="/register" className="btn-primary">Protect My Brand Free</a>
+          <a href="#demo" className="btn-secondary">See Live Alert</a>
         </div>
       </section>
 
       <div className="stats-bar">
-        {[["5min","Scan Interval"],["∞","Keywords"],["AI","Powered"],["$0","To Start"]].map(([n,l])=>(
+        {[["5min","Early Detection"],["9/10","Risk Scoring"],["AI","Reply Draft"],["$0","To Start"]].map(([n,l])=>(
           <div key={l} style={{textAlign:"center"}}>
             <div className="stat-num">{n}</div>
             <div className="stat-label">{l}</div>
@@ -167,14 +172,14 @@ export default function Home() {
       </div>
 
       <section className="section">
-        <div className="section-label">// Protocol</div>
-        <h2 className="section-title">HOW IT <span style={{background:"linear-gradient(135deg,var(--cyan),var(--magenta))",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>WORKS</span></h2>
+        <div className="section-label">// How It Works</div>
+        <h2 className="section-title">STOP FIRES<br/><span style={{background:"linear-gradient(135deg,var(--cyan),var(--magenta))",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>BEFORE THEY START</span></h2>
         <div className="steps reveal">
           {[
-            ["⚙️","01","Configure","Enter your keywords — brand name, competitors, industry terms. Connect your Slack in 30 seconds."],
-            ["🔍","02","Scan","Our engine scans Hacker News every 5 minutes, matching posts against your keyword list in real time."],
-            ["🧠","03","Analyze","AI classifies sentiment, urgency level, and generates a concise summary of each matched post."],
-            ["⚡","04","Alert","Critical mentions hit your Slack instantly — with a draft reply ready to send."]
+            ["🎯","01","Set Keywords","Enter your brand, competitors, or industry terms. We watch HN 24/7 so you don't have to."],
+            ["⚡","02","Early Detection","We catch posts in the first 5 minutes — before they gain traction and go viral."],
+            ["📊","03","Risk + Viral Score","AI scores each post 1-10 for brand risk and viral potential. Know exactly what needs action."],
+            ["💬","04","Reply Now","Get a founder-style HN reply ready to paste. Respond in 30 seconds, not 30 minutes."]
           ].map(([icon,num,title,desc])=>(
             <div className="step" key={num as string}>
               <div className="step-num">{num}</div>
@@ -189,16 +194,16 @@ export default function Home() {
       <div className="divider"></div>
 
       <section className="section">
-        <div className="section-label">// Capabilities</div>
-        <h2 className="section-title">BUILT FOR <span style={{background:"linear-gradient(135deg,var(--violet),var(--magenta))",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>SPEED</span></h2>
+        <div className="section-label">// Features</div>
+        <h2 className="section-title">BUILT FOR<br/><span style={{background:"linear-gradient(135deg,var(--violet),var(--magenta))",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>FOUNDERS</span></h2>
         <div className="features reveal">
           {[
-            ["🎯","Keyword Intelligence","Multi-keyword monitoring with smart matching. Track your brand, competitors, and industry terms simultaneously."],
-            ["🧬","AI Sentiment Analysis","LLaMA 3.3 classifies every mention as positive, negative, or neutral — with urgency scoring."],
-            ["💬","Auto-Generated Replies","Every alert includes a contextual reply draft. Respond to your community in seconds."],
-            ["🔔","Smart Filtering","Only negative or high-urgency mentions trigger alerts. Zero noise. Only what matters."],
-            ["⚡","Slack-Native","Alerts land directly in your existing Slack workspace. No new dashboards to check."],
-            ["🌐","Multi-Tenant","Each team gets their own isolated monitoring setup. Your data, completely private."]
+            ["🚨","Risk Score (1-10)","Know instantly if a post is dangerous. Score 8+ triggers immediate Slack alert with action required."],
+            ["📈","Viral Score (1-10)","Predict if a post will blow up. Catch opportunity threads early — not just negative ones."],
+            ["💬","HN-Style Reply Draft","AI writes in authentic HN founder tone. Paste and send in seconds. No PR speak."],
+            ["⚡","5-Min Early Detection","Catch threads before they gain momentum. The first 30 minutes are everything on HN."],
+            ["🥊","Competitor Radar","Monitor what HN says about your competitors. Turn their bad press into your opportunity."],
+            ["🔔","Slack-Native Alerts","Zero new dashboards. Alerts with full context land directly in your team Slack."]
           ].map(([icon,title,desc])=>(
             <div className="feature" key={title as string}>
               <div className="feature-icon">{icon}</div>
@@ -212,25 +217,27 @@ export default function Home() {
       <section style={{padding:"120px 40px",position:"relative",zIndex:1}} id="demo">
         <div style={{textAlign:"center",marginBottom:60}}>
           <div className="section-label" style={{display:"inline-block"}}>// Live Alert Sample</div>
-          <h2 className="section-title" style={{marginBottom:0}}>WHAT YOUR <span style={{background:"linear-gradient(135deg,var(--green),var(--cyan))",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>SLACK GETS</span></h2>
+          <h2 className="section-title" style={{marginBottom:0}}>WHAT HITS<br/><span style={{background:"linear-gradient(135deg,var(--green),var(--cyan))",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>YOUR SLACK</span></h2>
         </div>
         <div className="slack-card reveal">
           <div className="slack-header">
-            <div className="slack-avatar">🔔</div>
+            <div className="slack-avatar">⚠️</div>
             <div>
               <div className="slack-name">HN Monitor</div>
-              <div className="slack-time">Today at 3:47 PM</div>
+              <div className="slack-time">Today at 9:14 AM</div>
             </div>
           </div>
-          <div className="alert-badge">🚨 CRITICAL ALERT</div>
-          <div className="slack-field"><span className="slack-key">Sentiment</span><span className="slack-val negative">● Negative</span></div>
-          <div className="slack-field"><span className="slack-key">Urgency</span><span className="slack-val high">▲ High</span></div>
-          <div className="slack-field"><span className="slack-key">Post</span><span className="slack-val">Why I switched away from [YourProduct] after 2 years</span></div>
-          <div className="slack-field"><span className="slack-key">Link</span><span className="slack-val link">news.ycombinator.com/item?id=40291...</span></div>
+          <div className="alert-badge">🚨 POTENTIAL CRISIS — ACT NOW</div>
+          <div className="slack-field"><span className="slack-key">Why it matters</span><span className="slack-val negative">Negative thread gaining traction fast — 120 upvotes in 18 min</span></div>
+          <div className="slack-field"><span className="slack-key">Post</span><span className="slack-val">Why I stopped recommending [YourProduct] to my team</span></div>
+          <div className="slack-field"><span className="slack-key">Age</span><span className="slack-val">18 min old | Upvotes: 120 | Comments: 34</span></div>
+          <div className="score-bar"><span className="score-label">📊 Risk Score</span><span className="score-fill">█████████░</span><span className="score-num">9/10</span></div>
+          <div className="score-bar"><span className="score-label">📈 Viral Score</span><span className="score-fill">████████░░</span><span className="score-num">8/10</span></div>
           <div className="slack-draft">
-            <div style={{color:"var(--cyan)",fontSize:11,letterSpacing:2,marginBottom:8}}>SUGGESTED REPLY</div>
-            Thanks for the honest feedback — onboarding and API docs are areas we are actively improving. Would love to hear more specifics if you are open to it. DM me anytime.
+            <div style={{color:"var(--cyan)",fontSize:11,letterSpacing:2,marginBottom:8}}>💬 SUGGESTED REPLY (HN STYLE)</div>
+            Hey, founder here. This is valid feedback and I want to address it directly. We shipped a breaking change last week without enough notice — that was our mistake. Here is what we are doing to fix it.
           </div>
+          <div className="action-now">⚡ ACTION: RESPOND NOW</div>
         </div>
       </section>
 
@@ -239,7 +246,7 @@ export default function Home() {
       <section className="section">
         <div style={{textAlign:"center",marginBottom:60}}>
           <div className="section-label" style={{display:"inline-block"}}>// Pricing</div>
-          <h2 className="section-title" style={{marginBottom:0}}>SIMPLE <span style={{background:"linear-gradient(135deg,var(--cyan),var(--green))",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>PRICING</span></h2>
+          <h2 className="section-title" style={{marginBottom:0}}>SIMPLE<br/><span style={{background:"linear-gradient(135deg,var(--cyan),var(--green))",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>PRICING</span></h2>
         </div>
         <div className="pricing reveal">
           <div className="plan">
@@ -247,7 +254,10 @@ export default function Home() {
             <div className="plan-price">$0</div>
             <div className="plan-period">/ forever</div>
             <ul className="plan-features">
-              <li>1 keyword</li><li>100 alerts / month</li><li>Slack integration</li><li>AI sentiment analysis</li>
+              <li>3 keywords</li>
+              <li>100 alerts / month</li>
+              <li>Risk + Viral scoring</li>
+              <li>Slack integration</li>
             </ul>
             <a href="/register" className="plan-btn">Get Started</a>
           </div>
@@ -256,7 +266,11 @@ export default function Home() {
             <div className="plan-price">$29</div>
             <div className="plan-period">/ month</div>
             <ul className="plan-features">
-              <li>10 keywords</li><li>Unlimited alerts</li><li>Slack + Email</li><li>AI reply drafts</li><li>Priority support</li>
+              <li>20 keywords</li>
+              <li>Unlimited alerts</li>
+              <li>HN reply drafts</li>
+              <li>Competitor radar</li>
+              <li>Priority support</li>
             </ul>
             <a href="/register" className="plan-btn">Start Free Trial</a>
           </div>
@@ -265,7 +279,11 @@ export default function Home() {
             <div className="plan-price">$79</div>
             <div className="plan-period">/ month</div>
             <ul className="plan-features">
-              <li>Unlimited keywords</li><li>Unlimited alerts</li><li>Reddit + HN + Twitter</li><li>Team dashboard</li><li>API access</li>
+              <li>Unlimited keywords</li>
+              <li>Reddit + HN + Twitter</li>
+              <li>Team dashboard</li>
+              <li>API access</li>
+              <li>Custom alerts</li>
             </ul>
             <a href="/register" className="plan-btn">Go Pro</a>
           </div>
@@ -273,14 +291,14 @@ export default function Home() {
       </section>
 
       <section className="cta-section">
-        <h2>START MONITORING<br/>YOUR BRAND NOW</h2>
-        <p>Set up in 2 minutes. No credit card required.</p>
-        <a href="/register" className="btn-primary" style={{fontSize:14,padding:"20px 60px"}}>Launch Free Monitor</a>
+        <h2>ONE BAD HN THREAD<br/>CAN COST YOU THOUSANDS</h2>
+        <p>Set up in 2 minutes. Free forever. No credit card.</p>
+        <a href="/register" className="btn-primary" style={{fontSize:14,padding:"20px 60px"}}>Protect My Brand Now</a>
       </section>
 
       <footer>
         <div className="logo">HN_MONITOR</div>
-        <p>© 2025 HN Monitor. All systems operational.</p>
+        <p>© 2025 HN Monitor. Built for founders who move fast.</p>
       </footer>
     </>
   );
