@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 export default function Register() {
   const [email, setEmail] = useState("");
   const [keywords, setKeywords] = useState("");
+  const [competitorKeywords, setCompetitorKeywords] = useState("");
   const [slackWebhook, setSlackWebhook] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -20,7 +21,7 @@ export default function Register() {
       const response = await fetch("/api/monitor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, keywords, slackWebhook }),
+        body: JSON.stringify({ email, keywords, slackWebhook, competitorKeywords }),
       });
       const data: { message?: string; error?: string } = await response.json();
       if (!response.ok) {
@@ -30,6 +31,7 @@ export default function Register() {
       setMessage(data.message ?? "Monitoring started successfully!");
       setEmail("");
       setKeywords("");
+      setCompetitorKeywords("");
       setSlackWebhook("");
     } catch {
       setError("A network error occurred. Please try again.");
@@ -59,16 +61,20 @@ export default function Register() {
         .card-sub{font-size:15px;color:rgba(255,255,255,0.4);margin-bottom:40px;line-height:1.6;}
         .field{margin-bottom:24px;}
         .label{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:10px;display:block;}
+        .label.optional{color:rgba(255,170,0,0.6);}
         .input{width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:14px 16px;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color 0.3s;}
         .input:focus{border-color:var(--cyan);}
         .input::placeholder{color:rgba(255,255,255,0.2);}
-        textarea.input{resize:vertical;min-height:100px;}
+        textarea.input{resize:vertical;min-height:80px;}
+        .competitor .input:focus{border-color:#ffaa00;}
         .hint{font-size:12px;color:rgba(255,255,255,0.25);margin-top:6px;letter-spacing:1px;}
+        .competitor-badge{display:inline-block;background:rgba(255,170,0,0.1);border:1px solid rgba(255,170,0,0.3);color:#ffaa00;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;padding:3px 10px;margin-bottom:10px;}
         .submit{width:100%;font-family:'Orbitron',monospace;font-size:12px;letter-spacing:3px;padding:16px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:var(--bg);border:none;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all 0.3s;margin-top:8px;}
         .submit:hover{box-shadow:0 10px 40px rgba(0,245,255,0.3);transform:translateY(-2px);}
         .submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
         .success{margin-top:20px;padding:16px;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.3);color:var(--green);font-size:14px;letter-spacing:1px;text-align:center;}
         .error{margin-top:20px;padding:16px;background:rgba(255,0,0,0.05);border:1px solid rgba(255,60,60,0.3);color:#ff6060;font-size:14px;letter-spacing:1px;text-align:center;}
+        .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);margin:8px 0 32px;}
       `}</style>
 
       <div className="page">
@@ -96,16 +102,32 @@ export default function Register() {
             </div>
 
             <div className="field">
-              <label className="label">Keywords</label>
+              <label className="label">Your Brand Keywords</label>
               <textarea
                 className="input"
                 value={keywords}
                 onChange={(e) => setKeywords(e.target.value)}
-                placeholder="your-brand, competitor, industry-term"
+                placeholder="your-brand, your-product, your-name"
                 required
               />
               <p className="hint">Separate multiple keywords with commas</p>
             </div>
+
+            <div className="divider"></div>
+
+            <div className="field competitor">
+              <div className="competitor-badge">🥊 COMPETITOR RADAR</div>
+              <label className="label optional">Competitor Keywords (optional)</label>
+              <textarea
+                className="input"
+                value={competitorKeywords}
+                onChange={(e) => setCompetitorKeywords(e.target.value)}
+                placeholder="zendesk, intercom, freshdesk"
+              />
+              <p className="hint">Monitor what HN says about your competitors — turn their bad press into your opportunity</p>
+            </div>
+
+            <div className="divider"></div>
 
             <div className="field">
               <label className="label">Slack Webhook URL</label>
