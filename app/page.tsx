@@ -824,17 +824,28 @@ export default function Home() {
         </div>
 
         <h1>
-          Respond before<br/>
-          it <em>goes viral.</em>
+           By the time you see it,<br/>
+           it's already <em>viral.</em>
         </h1>
 
         <p className="hero-sub">
-          HN threads move fast. One negative post can hit 200 upvotes in 30 minutes.
-          We detect it early, score the risk, and draft your reply — before the damage spreads.
-        </p>
+          Most founders find out too late.  
+          We detect negative HN threads in the first 5 minutes, score the risk,  
+         and give you a reply before it explodes.
+       </p>
 
         <div className="hero-actions">
-          <a href="/register" className="btn-main">Protect My Brand Free</a>
+        <div style={{
+  marginTop: "16px",
+  fontSize: "13px",
+  color: "#6b6966"
+}}>
+  🔥 17 founders got alerts in the last 10 minutes
+</div>
+        <a href="/register" className="btn-main">
+          Stop the next viral thread →
+        </a>
+
           <a href="#demo" className="btn-ghost">See live alert ↓</a>
         </div>
 
@@ -956,6 +967,13 @@ export default function Home() {
 
       {/* PRICING */}
       <section className="pricing-section" id="pricing">
+      <p style={{
+  marginTop: "-40px",
+  marginBottom: "40px",
+  color: "#6b6966"
+}}>
+  One missed thread can cost you thousands in churn.
+</p>
         <div className="section-eyebrow reveal">Pricing</div>
         <h2 className="section-title reveal">
           Simple pricing,<br/>
@@ -1012,14 +1030,14 @@ export default function Home() {
 
       {/* CTA */}
       <section className="cta-section">
-        <h2>
-          One bad HN thread<br/>
-          can cost you <em>thousands.</em>
-        </h2>
+      <h2>
+        The next viral thread<br/>
+         could be about <em>you.</em>
+      </h2>
         <p>Set up in 2 minutes. Free forever. No credit card.</p>
-        <a href="/register" className="btn-main" style={{fontSize: "16px", padding: "16px 40px"}}>
-          Protect My Brand Now →
-        </a>
+        <a href="/register" className="btn-main">
+  Get alerts before it blows up →
+</a>
       </section>
 
       {/* FOOTER */}
