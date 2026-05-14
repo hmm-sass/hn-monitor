@@ -1,37 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-
 export default function Home() {
-  useEffect(() => {
-    const cursor = document.getElementById("cursor");
-    const ring = document.getElementById("cursorRing");
-    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-    const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      if (cursor) {
-        cursor.style.left = mouseX - 6 + "px";
-        cursor.style.top = mouseY - 6 + "px";
-      }
-    };
-    document.addEventListener("mousemove", onMove);
-
-    const animateRing = () => {
-      ringX += (mouseX - ringX - 20) * 0.12;
-      ringY += (mouseY - ringY - 20) * 0.12;
-      if (ring) {
-        ring.style.left = ringX + "px";
-        ring.style.top = ringY + "px";
-      }
-      requestAnimationFrame(animateRing);
-    };
-    animateRing();
-
-    return () => document.removeEventListener("mousemove", onMove);
-  }, []);
-
   return (
     <>
       <style>{`
@@ -39,9 +8,7 @@ export default function Home() {
         :root{--bg:#fafaf9;--ink:#0f0e0d;--ink-2:#6b6966;--ink-3:#b5b2ae;--orange:#ff4d00;--blue:#0066ff;--green:#00c853;--surface:#ffffff;--border:rgba(15,14,13,0.08);}
         *{margin:0;padding:0;box-sizing:border-box;}
         html{scroll-behavior:smooth;}
-        body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;}
-        .cursor{width:10px;height:10px;background:var(--orange);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.1s;}
-        .cursor-ring{width:36px;height:36px;border:1.5px solid rgba(255,77,0,0.3);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all 0.15s ease;}
+        body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
         nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(250,250,249,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;}
         .nav-logo{font-family:'Instrument Serif',serif;font-size:20px;color:var(--ink);text-decoration:none;letter-spacing:-0.5px;}
         .nav-logo span{color:var(--orange);font-style:italic;}
@@ -144,9 +111,6 @@ export default function Home() {
         footer p{font-size:13px;color:var(--ink-3);}
         @media(max-width:768px){nav{padding:0 20px;}.hero{padding:100px 20px 60px;}.stats{grid-template-columns:repeat(2,1fr);}.features-grid{grid-template-columns:1fr;}.steps{grid-template-columns:1fr;gap:32px;}.pricing-grid{grid-template-columns:1fr;}.features-section,.pricing-section{padding:80px 20px;}.how-section{padding:80px 20px;}}
       `}</style>
-
-      <div className="cursor" id="cursor"></div>
-      <div className="cursor-ring" id="cursorRing"></div>
 
       <nav>
         <a href="/" className="nav-logo">Signal<span>Watch</span></a>
