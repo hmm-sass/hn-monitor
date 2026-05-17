@@ -5,6 +5,7 @@ type MonitorPayload = {
   email?: string;
   keywords?: string;
   slackWebhook?: string;
+  competitorKeywords?: string;
 };
 
 function parseKeywords(rawKeywords: string): string[] {
@@ -20,12 +21,14 @@ export async function POST(request: Request) {
     const email = body.email?.trim() ?? "";
     const slackWebhook = body.slackWebhook?.trim() ?? "";
     const rawKeywords = body.keywords?.trim() ?? "";
+    const rawCompetitorKeywords = body.competitorKeywords?.trim() ?? "";
 
     const keywords = parseKeywords(rawKeywords);
+    const competitor_keywords = parseKeywords(rawCompetitorKeywords);
 
     if (!email || !slackWebhook || keywords.length === 0) {
       return NextResponse.json(
-        { error: "email, keywords, slackWebhook은 필수입니다." },
+        { error: "Email, keywords, and Slack webhook are required." },
         { status: 400 }
       );
     }
@@ -34,22 +37,23 @@ export async function POST(request: Request) {
       email,
       keywords,
       slack_webhook: slackWebhook,
+      competitor_keywords,
     });
 
     if (error) {
       return NextResponse.json(
-        { error: "Supabase 저장에 실패했습니다." },
+        { error: "Failed to save. Please try again." },
         { status: 500 }
       );
     }
 
     return NextResponse.json(
-      { message: "모니터가 성공적으로 등록되었습니다." },
+      { message: "Monitor activated successfully!" },
       { status: 201 }
     );
   } catch {
     return NextResponse.json(
-      { error: "요청 처리 중 오류가 발생했습니다." },
+      { error: "An error occurred. Please try again." },
       { status: 500 }
     );
   }
