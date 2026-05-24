@@ -60,7 +60,7 @@ function TypingCard() {
       <div className="sp-header">
         <div className="sp-icon">⚠️</div>
         <div>
-          <span className="sp-name">SignalWatch</span>
+          <span className="sp-name">RespondAI</span>
           <span className="sp-time">Just now</span>
         </div>
         {phase >= 1 && <div className="sp-live">● LIVE</div>}
@@ -349,7 +349,7 @@ export default function Home() {
           <div className="social-label">What founders are saying</div>
           <div className="testimonials">
             {[
-              ["S","A negative HN thread about our pricing hit 180 upvotes in 20 minutes. SignalWatch caught it at 12 upvotes. We responded before it blew up.","Sarah K.","Founder, DevToolsCo"],
+              ["S","A negative HN thread about our pricing hit 180 upvotes in 20 minutes. RespondAI caught it at 12 upvotes. We responded before it blew up.","Sarah K.","Founder, DevToolsCo"],
               ["M","The reply draft is scarily good. It sounds exactly like how I'd actually respond on HN. Saved me from a PR disaster twice this month.","Marcus L.","CEO, SaaSBuilder"],
               ["J","I used to check HN manually every hour. Now I just wait for the Slack ping. It's changed how I handle community management completely.","James R.","Indie Hacker"],
             ].map(([avatar,text,name,role])=>(
@@ -484,7 +484,7 @@ export default function Home() {
 
       <footer>
         <a href="/" className="footer-logo">Signal<span>Watch</span></a>
-        <p>© 2025 SignalWatch. Built for founders who move fast.</p>
+        <p>© 2025 RespondAI. Built for founders who move fast.</p>
       </footer>
     </>
   );
