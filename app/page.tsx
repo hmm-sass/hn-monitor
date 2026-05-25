@@ -65,21 +65,18 @@ function TypingCard() {
         </div>
         {phase >= 1 && <div className="sp-live">● LIVE</div>}
       </div>
-
       {phase >= 1 && (
         <div className="sp-alert" style={{animation:"fadeIn 0.4s ease"}}>
           <div className="sp-alert-title">🚨 Negative thread gaining traction fast</div>
           <div className="sp-alert-body">Why I stopped recommending [YourProduct] to my entire team</div>
         </div>
       )}
-
       {phase >= 2 && (
         <div style={{animation:"fadeIn 0.4s ease"}}>
           <div className="sp-row"><span className="sp-label">Age</span><span className="sp-val orange">18 min old — act now</span></div>
           <div className="sp-row"><span className="sp-label">Link</span><span className="sp-val link">news.ycombinator.com/item?id=...</span></div>
         </div>
       )}
-
       {phase >= 3 && (
         <div className="sp-scores" style={{animation:"fadeIn 0.4s ease"}}>
           <div className="score-chip">
@@ -98,7 +95,6 @@ function TypingCard() {
           </div>
         </div>
       )}
-
       {phase >= 4 && (
         <div style={{animation:"fadeIn 0.4s ease"}}>
           <div className="sp-reply">
@@ -314,15 +310,14 @@ export default function Home() {
         }
       `}</style>
 
-<nav>
-  <a href="/" className="nav-logo">Respond<span>AI</span></a>
-  <div className="nav-right">
-    <a href="#features" className="nav-link">Features</a>
-    <a href="#pricing" className="nav-link">Pricing</a>
-    <a href="/login" className="nav-link">Log in</a>
-    <a href="/register" className="nav-btn">Start Free →</a>
-  </div>
-</nav>
+      <nav>
+        <a href="/" className="nav-logo">Respond<span>AI</span></a>
+        <div className="nav-right">
+          <a href="#features" className="nav-link">Features</a>
+          <a href="#pricing" className="nav-link">Pricing</a>
+          <a href="/login" className="nav-btn">Start Free →</a>
+        </div>
+      </nav>
 
       <section className="hero">
         <div className="hero-badge">
@@ -335,7 +330,7 @@ export default function Home() {
           We detect it early, score the risk, and draft your reply — before the damage spreads.
         </p>
         <div className="hero-actions">
-          <a href="/register" className="btn-main">Protect My Brand Free</a>
+          <a href="/login" className="btn-main">Protect My Brand Free</a>
           <a href="#demo" className="btn-ghost">See live alert ↓</a>
         </div>
         <div className="hero-card" id="demo">
@@ -426,7 +421,7 @@ export default function Home() {
               <li>Risk + Viral scoring</li>
               <li>Slack integration</li>
             </ul>
-            <a href="/register" className="plan-cta">Get started free</a>
+            <a href="/login" className="plan-cta">Get started free</a>
           </div>
           <div className="plan featured">
             <div className="plan-badge">Most popular</div>
@@ -441,7 +436,7 @@ export default function Home() {
               <li>Competitor radar</li>
               <li>Priority support</li>
             </ul>
-            <a href="/register" className="plan-cta">Start free trial</a>
+            <a href="/login" className="plan-cta">Start free trial</a>
           </div>
           <div className="plan">
             <div className="plan-name">Pro</div>
@@ -455,7 +450,7 @@ export default function Home() {
               <li>API access</li>
               <li>Custom alert rules</li>
             </ul>
-            <a href="/register" className="plan-cta">Go pro</a>
+            <a href="/login" className="plan-cta">Go pro</a>
           </div>
         </div>
       </section>
@@ -465,12 +460,12 @@ export default function Home() {
         <h2 className="section-title reveal">Common<br/><em>questions.</em></h2>
         <div className="faq-list reveal">
           {[
-            ["How do I set up my keywords?","After registering, enter any keywords you want to monitor — your brand name, product name, or competitor names. Separate them with commas. We start scanning immediately."],
+            ["How do I set up my keywords?","After signing in, enter any keywords you want to monitor — your brand name, product name, or competitor names. We start scanning immediately."],
             ["How accurate are the AI reply drafts?","The drafts are written in authentic HN founder tone using LLaMA 3.3. Most founders use them as a starting point and tweak slightly. They're designed to sound like you, not like PR."],
             ["What's the difference between Risk Score and Viral Score?","Risk Score (shown in red) measures how damaging a post could be to your brand. Viral Score (shown in green) measures how likely a post is to gain traction — including positive mentions worth engaging with."],
             ["Do I need a Slack workspace?","Yes, currently alerts are sent via Slack Webhook. Email alerts are coming soon for teams without Slack."],
             ["How is this different from Brand24 or Mention?","Those tools give you a dashboard to check. We push alerts to where you already work (Slack) with an AI-drafted reply ready to go. We're built for speed, not analytics."],
-            ["Can I monitor competitors?","Yes. Add competitor keywords in the Competitor Radar section during setup. You'll get separate alerts when HN discusses your competitors, with an opportunity score instead of a risk score."],
+            ["Can I monitor competitors?","Yes. Add competitor keywords during setup. You'll get separate alerts when HN discusses your competitors, with an opportunity score instead of a risk score."],
           ].map(([q,a])=>(
             <FAQItem key={q as string} q={q as string} a={a as string} />
           ))}
@@ -480,7 +475,7 @@ export default function Home() {
       <section className="cta-section">
         <h2>One bad HN thread<br/>can cost you <em>thousands.</em></h2>
         <p>Set up in 2 minutes. Free forever. No credit card.</p>
-        <a href="/register" className="btn-main" style={{fontSize:"16px",padding:"16px 40px"}}>Protect My Brand Now →</a>
+        <a href="/login" className="btn-main" style={{fontSize:"16px",padding:"16px 40px"}}>Protect My Brand Now →</a>
       </section>
 
       <footer>
