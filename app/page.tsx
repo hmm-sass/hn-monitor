@@ -315,7 +315,7 @@ export default function Home() {
       `}</style>
 
       <nav>
-        <a href="/" className="nav-logo">Signal<span>Watch</span></a>
+        <a href="/" className="nav-logo">Respond<span>AI</span></a>
         <div className="nav-right">
           <a href="#features" className="nav-link">Features</a>
           <a href="#pricing" className="nav-link">Pricing</a>
@@ -444,7 +444,7 @@ export default function Home() {
           </div>
           <div className="plan">
             <div className="plan-name">Pro</div>
-            <div className="plan-price">$79</div>
+            <div className="plan-price">$49</div>
             <div className="plan-period">per month</div>
             <div className="plan-divider"></div>
             <ul className="plan-features">
@@ -483,7 +483,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <a href="/" className="footer-logo">Signal<span>Watch</span></a>
+        <a href="/" className="footer-logo">Respond<span>AI</span></a>
         <p>© 2025 RespondAI. Built for founders who move fast.</p>
       </footer>
     </>
