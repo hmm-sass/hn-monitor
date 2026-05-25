@@ -314,14 +314,15 @@ export default function Home() {
         }
       `}</style>
 
-      <nav>
-        <a href="/" className="nav-logo">Respond<span>AI</span></a>
-        <div className="nav-right">
-          <a href="#features" className="nav-link">Features</a>
-          <a href="#pricing" className="nav-link">Pricing</a>
-          <a href="/register" className="nav-btn">Start Free →</a>
-        </div>
-      </nav>
+<nav>
+  <a href="/" className="nav-logo">Respond<span>AI</span></a>
+  <div className="nav-right">
+    <a href="#features" className="nav-link">Features</a>
+    <a href="#pricing" className="nav-link">Pricing</a>
+    <a href="/login" className="nav-link">Log in</a>
+    <a href="/register" className="nav-btn">Start Free →</a>
+  </div>
+</nav>
 
       <section className="hero">
         <div className="hero-badge">
