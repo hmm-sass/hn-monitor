@@ -13,15 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SignalWatch",
-  description: "Hacker News monitoring for founders and teams.",
+  title: "RespondAI",
+  description: "Respond before it goes viral. AI-powered brand monitoring for founders.",
   openGraph: {
-    title: "SignalWatch",
-    description: "Hacker News monitoring for founders and teams.",
+    title: "RespondAI",
+    description: "Respond before it goes viral. AI-powered brand monitoring for founders.",
   },
   twitter: {
-    title: "SignalWatch",
-    description: "Hacker News monitoring for founders and teams.",
+    title: "RespondAI",
+    description: "Respond before it goes viral. AI-powered brand monitoring for founders.",
   },
 };
 

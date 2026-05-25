@@ -95,7 +95,7 @@ export default function Register() {
       <div className="page">
         <div className="left">
           <div className="left-inner">
-            <a href="/" className="left-logo">Signal<span>Watch</span></a>
+            <a href="/" className="left-logo">Respond<span>AI</span></a>
             <h2>Start protecting<br/>your brand <em>today.</em></h2>
             <p className="left-sub">Join founders who respond to HN mentions in under 30 seconds — before the damage spreads.</p>
             <ul className="left-benefits">
