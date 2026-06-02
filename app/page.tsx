@@ -407,54 +407,54 @@ export default function Home() {
       </section>
 
       <section className="pricing-section" id="pricing">
-        <div className="section-eyebrow reveal">Pricing</div>
-        <h2 className="section-title reveal">Simple pricing,<br/><em>no surprises.</em></h2>
-        <div className="pricing-grid reveal">
-          <div className="plan">
-            <div className="plan-name">Free</div>
-            <div className="plan-price">$0</div>
-            <div className="plan-period">forever</div>
-            <div className="plan-divider"></div>
-            <ul className="plan-features">
-              <li>3 keywords</li>
-              <li>HN monitoring</li>
-              <li>Risk + Viral scoring</li>
-              <li>Slack integration</li>
-            </ul>
-            <a href="/login" className="plan-cta">Get started free</a>
-          </div>
-          <div className="plan featured">
-            <div className="plan-badge">Most popular</div>
-            <div className="plan-name">Starter</div>
-            <div className="plan-price">$29</div>
-            <div className="plan-period">per month</div>
-            <div className="plan-divider"></div>
-            <ul className="plan-features">
-              <li>20 keywords</li>
-              <li>HN monitoring</li>
-              <li>AI reply drafts</li>
-              <li>Competitor radar</li>
-              <li>Priority support</li>
-            </ul>
-            <a href="/login" className="plan-cta">Start free trial</a>
-          </div>
-          <div className="plan">
-            <div className="plan-name">Pro</div>
-            <div className="plan-price">$49</div>
-            <div className="plan-period">per month</div>
-            <div className="plan-divider"></div>
-            <ul className="plan-features">
-              <li>Unlimited keywords</li>
-              <li>HN + Reddit + Twitter</li>
-              <li>Team dashboard</li>
-              <li>API access</li>
-              <li>Custom alert rules</li>
-            </ul>
-            <a href="/login" className="plan-cta">Go pro</a>
-          </div>
-        </div>
-      </section>
-
+  <div className="section-eyebrow reveal">Pricing</div>
+  <h2 className="section-title reveal">Simple pricing,<br/><em>no surprises.</em></h2>
+  <div className="pricing-grid reveal">
+    <div className="plan">
+      <div className="plan-name">Free</div>
+      <div className="plan-price">$0</div>
+      <div className="plan-period">forever</div>
+      <div className="plan-divider"></div>
+      <ul className="plan-features">
+        <li>3 keywords</li>
+        <li>HN monitoring</li>
+        <li>Risk + Viral scoring</li>
+        <li>Slack alerts</li>
+      </ul>
+      <a href="/login" className="plan-cta">Get started free</a>
+    </div>
+    <div className="plan featured">
+      <div className="plan-badge">Most popular</div>
+      <div className="plan-name">Starter</div>
+      <div className="plan-price">$29</div>
+      <div className="plan-period">per month</div>
+      <div className="plan-divider"></div>
+      <ul className="plan-features">
+        <li>20 keywords</li>
+        <li>HN + Reddit monitoring</li>
+        <li>AI reply drafts</li>
+        <li>Competitor radar</li>
+        <li>Slack alerts</li>
+      </ul>
+      <a href="/login" className="plan-cta">Start free trial</a>
+    </div>
+    <div className="plan">
+      <div className="plan-name">Pro</div>
+      <div className="plan-price">$49</div>
+      <div className="plan-period">per month</div>
+      <div className="plan-divider"></div>
+      <ul className="plan-features">
+        <li>Unlimited keywords</li>
+        <li>HN + Reddit monitoring</li>
+        <li>Team dashboard</li>
+        <li>Weekly AI brand report</li>
+        <li>Custom AI tone</li>
+        <li>API access</li>
+      </ul>
+      <a href="/login" className="plan-cta">Go pro</a>
+    </div>
+  </div>
+</section>
       <section className="faq-section">
         <div className="section-eyebrow reveal">FAQ</div>
         <h2 className="section-title reveal">Common<br/><em>questions.</em></h2>
