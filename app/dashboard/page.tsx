@@ -12,15 +12,28 @@ type Monitor = {
   slack_webhook: string;
 };
 
+type Mention = {
+  id: string;
+  platform: string;
+  post_title: string;
+  post_url: string;
+  risk_score: number | null;
+  viral_score: number | null;
+  ai_draft: string;
+  is_read: boolean;
+  detected_at: string;
+};
+
 export default function Dashboard() {
   const router = useRouter();
   const supabase = createClient();
 
   const [user, setUser] = useState<{ email: string } | null>(null);
   const [monitor, setMonitor] = useState<Monitor | null>(null);
+  const [mentions, setMentions] = useState<Mention[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  // 온보딩 폼
   const [keywords, setKeywords] = useState("");
   const [competitorKeywords, setCompetitorKeywords] = useState("");
   const [slackWebhook, setSlackWebhook] = useState("");
@@ -31,16 +44,26 @@ export default function Dashboard() {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push("/login"); return; }
-
       setUser({ email: user.email ?? "" });
 
-      const { data } = await supabase
+      const { data: monitorData } = await supabase
         .from("monitors")
         .select("*")
         .eq("email", user.email)
         .single();
 
-      setMonitor(data ?? null);
+      setMonitor(monitorData ?? null);
+
+      if (monitorData) {
+        const { data: mentionData } = await supabase
+          .from("mentions")
+          .select("*")
+          .eq("monitor_id", monitorData.id)
+          .order("detected_at", { ascending: false })
+          .limit(20);
+        setMentions(mentionData ?? []);
+      }
+
       setLoading(false);
     }
     load();
@@ -54,30 +77,26 @@ export default function Dashboard() {
     const res = await fetch("/api/monitor", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: user?.email,
-        keywords,
-        slackWebhook,
-        competitorKeywords,
-      }),
+      body: JSON.stringify({ email: user?.email, keywords, slackWebhook, competitorKeywords }),
     });
 
     const data = await res.json();
     if (!res.ok) { setError(data.error); setSubmitting(false); return; }
 
-    const { data: monitor } = await supabase
-      .from("monitors")
-      .select("*")
-      .eq("email", user?.email)
-      .single();
-
-    setMonitor(monitor);
+    const { data: monitorData } = await supabase
+      .from("monitors").select("*").eq("email", user?.email).single();
+    setMonitor(monitorData);
     setSubmitting(false);
   };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push("/");
+  };
+
+  const markAsRead = async (id: string) => {
+    await supabase.from("mentions").update({ is_read: true }).eq("id", id);
+    setMentions(prev => prev.map(m => m.id === id ? { ...m, is_read: true } : m));
   };
 
   if (loading) return (
@@ -103,8 +122,6 @@ export default function Dashboard() {
         .main{max-width:900px;margin:0 auto;padding:48px 40px;}
         .page-title{font-family:'Instrument Serif',serif;font-size:36px;letter-spacing:-1px;margin-bottom:6px;}
         .page-sub{font-size:14px;color:var(--ink-2);margin-bottom:48px;font-weight:300;}
-
-        /* 온보딩 */
         .onboarding{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px;max-width:560px;}
         .onboarding-title{font-family:'Instrument Serif',serif;font-size:26px;letter-spacing:-0.5px;margin-bottom:8px;}
         .onboarding-sub{font-size:14px;color:var(--ink-2);margin-bottom:32px;font-weight:300;line-height:1.6;}
@@ -122,9 +139,7 @@ export default function Dashboard() {
         .submit:hover:not(:disabled){background:var(--orange);transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,77,0,0.3);}
         .submit:disabled{opacity:0.5;cursor:not-allowed;}
         .error-msg{background:#fff5f5;border:1px solid rgba(255,0,0,0.15);border-radius:10px;padding:12px 16px;font-size:13px;color:#d32f2f;margin-top:12px;}
-
-        /* 모니터 현황 */
-        .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:32px;}
+        .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:40px;}
         .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;}
         .card-label{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;}
         .keyword-list{display:flex;flex-wrap:wrap;gap:8px;}
@@ -132,15 +147,30 @@ export default function Dashboard() {
         .competitor-tag{display:inline-flex;align-items:center;background:#f0f7ff;border:1px solid rgba(0,102,255,0.15);border-radius:100px;padding:4px 12px;font-size:13px;color:#0066ff;font-weight:500;}
         .slack-status{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2);}
         .status-dot{width:8px;height:8px;border-radius:50%;background:var(--emerald);}
-
-        /* 멘션 */
-        .mentions-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+        .mentions-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
         .mentions-title{font-size:16px;font-weight:500;}
+        .unread-badge{background:var(--orange);color:white;font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;}
+        .mention-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:12px;cursor:pointer;transition:all 0.2s;}
+        .mention-card:hover{border-color:rgba(255,77,0,0.3);box-shadow:0 4px 16px rgba(0,0,0,0.06);}
+        .mention-card.unread{border-left:3px solid var(--orange);}
+        .mention-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px;}
+        .mention-title{font-size:14px;font-weight:500;color:var(--ink);line-height:1.5;flex:1;}
+        .mention-time{font-size:12px;color:var(--ink-3);white-space:nowrap;flex-shrink:0;}
+        .mention-scores{display:flex;gap:8px;margin-bottom:12px;}
+        .score-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:12px;font-weight:500;}
+        .score-badge.risk{background:rgba(220,38,38,0.08);color:var(--red);}
+        .score-badge.viral{background:rgba(5,150,105,0.08);color:var(--emerald);}
+        .score-badge.platform{background:var(--bg);border:1px solid var(--border);color:var(--ink-3);}
+        .mention-draft{background:#f8f9ff;border-left:2px solid #0066ff;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--ink-2);line-height:1.6;font-style:italic;margin-bottom:12px;}
+        .mention-actions{display:flex;gap:8px;}
+        .action-btn{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;cursor:pointer;transition:all 0.2s;text-decoration:none;border:1px solid var(--border);color:var(--ink-2);background:none;font-family:'DM Sans',sans-serif;}
+        .action-btn.primary{background:var(--ink);color:white;border-color:var(--ink);}
+        .action-btn.primary:hover{background:var(--orange);border-color:var(--orange);}
+        .action-btn:hover{border-color:var(--ink);color:var(--ink);}
         .empty-state{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:60px;text-align:center;}
         .empty-icon{font-size:32px;margin-bottom:16px;}
         .empty-title{font-size:16px;font-weight:500;margin-bottom:8px;}
         .empty-sub{font-size:14px;color:var(--ink-2);font-weight:300;line-height:1.6;}
-
         @media(max-width:768px){
           .nav{padding:0 20px;}
           .main{padding:32px 20px;}
@@ -161,35 +191,29 @@ export default function Dashboard() {
           <>
             <h1 className="page-title">Welcome to RespondAI</h1>
             <p className="page-sub">Set up your monitor to start protecting your brand.</p>
-
             <div className="onboarding">
               <h2 className="onboarding-title">Set up your monitor</h2>
               <p className="onboarding-sub">Enter your keywords and connect Slack. Takes 2 minutes.</p>
-
               <form onSubmit={handleSetup}>
                 <div className="field">
                   <label className="label">Brand Keywords</label>
                   <textarea className="input" value={keywords} onChange={e => setKeywords(e.target.value)} placeholder="your-brand, your-product, your-name" required/>
-                  <p className="hint">Separate with commas. We'll alert you when these appear on HN.</p>
+                  <p className="hint">Separate with commas.</p>
                 </div>
-
                 <div className="divider">
                   <div className="divider-line"></div>
                   <span className="divider-label">Optional</span>
                   <div className="divider-line"></div>
                 </div>
-
                 <div className="field">
                   <label className="label">Competitor Keywords</label>
                   <textarea className="input" value={competitorKeywords} onChange={e => setCompetitorKeywords(e.target.value)} placeholder="zendesk, intercom, freshdesk"/>
                 </div>
-
                 <div className="field">
                   <label className="label">Slack Webhook URL</label>
                   <input className="input" type="url" value={slackWebhook} onChange={e => setSlackWebhook(e.target.value)} placeholder="https://hooks.slack.com/services/..." required/>
                   <p className="hint">Get your webhook from <a href="https://api.slack.com/apps" target="_blank" rel="noreferrer" style={{color:"var(--orange)"}}>api.slack.com/apps</a></p>
                 </div>
-
                 <button className="submit" disabled={submitting}>
                   {submitting ? "Activating..." : "Activate Monitor →"}
                 </button>
@@ -200,7 +224,7 @@ export default function Dashboard() {
         ) : (
           <>
             <h1 className="page-title">Dashboard</h1>
-            <p className="page-sub">Your monitor is active. We scan HN every 5 minutes.</p>
+            <p className="page-sub">Your monitor is active. Scanning HN every 5 minutes.</p>
 
             <div className="cards">
               <div className="card">
@@ -211,7 +235,6 @@ export default function Dashboard() {
                   ))}
                 </div>
               </div>
-
               <div className="card">
                 <div className="card-label">Competitor Keywords</div>
                 <div className="keyword-list">
@@ -223,7 +246,6 @@ export default function Dashboard() {
                   }
                 </div>
               </div>
-
               <div className="card" style={{gridColumn:"1/-1"}}>
                 <div className="card-label">Slack Integration</div>
                 <div className="slack-status">
@@ -235,13 +257,62 @@ export default function Dashboard() {
 
             <div className="mentions-header">
               <span className="mentions-title">Recent Mentions</span>
+              {mentions.filter(m => !m.is_read).length > 0 && (
+                <span className="unread-badge">
+                  {mentions.filter(m => !m.is_read).length} new
+                </span>
+              )}
             </div>
 
-            <div className="empty-state">
-              <div className="empty-icon">📡</div>
-              <div className="empty-title">Scanning HN...</div>
-              <div className="empty-sub">Mentions will appear here when we detect your keywords.<br/>Check your Slack for real-time alerts.</div>
-            </div>
+            {mentions.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon">📡</div>
+                <div className="empty-title">Scanning HN...</div>
+                <div className="empty-sub">Mentions will appear here when we detect your keywords.<br/>Check your Slack for real-time alerts.</div>
+              </div>
+            ) : (
+              mentions.map(mention => (
+                <div
+                  key={mention.id}
+                  className={`mention-card ${!mention.is_read ? "unread" : ""}`}
+                  onClick={() => {
+                    setExpandedId(expandedId === mention.id ? null : mention.id);
+                    if (!mention.is_read) markAsRead(mention.id);
+                  }}
+                >
+                  <div className="mention-top">
+                    <div className="mention-title">{mention.post_title}</div>
+                    <div className="mention-time">
+                      {new Date(mention.detected_at).toLocaleDateString("en-US", { month:"short", day:"numeric", hour:"2-digit", minute:"2-digit" })}
+                    </div>
+                  </div>
+                  <div className="mention-scores">
+                    {mention.risk_score !== null && (
+                      <span className="score-badge risk">🔴 Risk {mention.risk_score}/10</span>
+                    )}
+                    {mention.viral_score !== null && (
+                      <span className="score-badge viral">🟢 Viral {mention.viral_score}/10</span>
+                    )}
+                    <span className="score-badge platform">{mention.platform.toUpperCase()}</span>
+                  </div>
+                  {expandedId === mention.id && (
+                    <>
+                      {mention.ai_draft && (
+                        <div className="mention-draft">💬 {mention.ai_draft}</div>
+                      )}
+                      <div className="mention-actions">
+                        <a href={mention.post_url} target="_blank" rel="noreferrer" className="action-btn primary">
+                          Respond on HN →
+                        </a>
+                        <button className="action-btn" onClick={e => { e.stopPropagation(); navigator.clipboard.writeText(mention.ai_draft); }}>
+                          Copy draft
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))
+            )}
           </>
         )}
       </main>
