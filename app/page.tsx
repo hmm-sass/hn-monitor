@@ -436,7 +436,7 @@ export default function Home() {
         <li>Competitor radar</li>
         <li>Slack alerts</li>
       </ul>
-      <a href="/login" className="plan-cta">Start free trial</a>
+      <a href="https://respondai12.lemonsqueezy.com/buy/1739869" className="plan-cta" target="_blank">Start free trial</a>
     </div>
     <div className="plan">
       <div className="plan-name">Pro</div>
@@ -451,7 +451,7 @@ export default function Home() {
         <li>Custom AI tone</li>
         <li>API access</li>
       </ul>
-      <a href="/login" className="plan-cta">Go pro</a>
+      <a href="https://respondai12.lemonsqueezy.com/buy/1739870" className="plan-cta" target="_blank">Go pro</a>
     </div>
   </div>
 </section>
