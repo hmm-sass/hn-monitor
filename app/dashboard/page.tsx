@@ -43,24 +43,32 @@ export default function Dashboard() {
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
+      console.log('user:', user?.email);
       if (!user) { router.push("/login"); return; }
       setUser({ email: user.email ?? "" });
 
-      const { data: monitorData } = await supabase
+      const { data: monitorData, error: monitorError } = await supabase
         .from("monitors")
         .select("*")
         .eq("email", user.email)
         .single();
 
+      console.log('monitorData:', monitorData);
+      console.log('monitorError:', monitorError);
+
       setMonitor(monitorData ?? null);
 
       if (monitorData) {
-        const { data: mentionData } = await supabase
+        const { data: mentionData, error: mentionError } = await supabase
           .from("mentions")
           .select("*")
           .eq("monitor_id", monitorData.id)
           .order("detected_at", { ascending: false })
           .limit(20);
+
+        console.log('mentionData:', mentionData);
+        console.log('mentionError:', mentionError);
+
         setMentions(mentionData ?? []);
       }
 
