@@ -14,11 +14,14 @@ export default function Login() {
     setIsSubmitting(true);
     setError(null);
 
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get("plan");
+
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?plan=${plan || ""}`,
       },
     });
 
@@ -71,13 +74,13 @@ export default function Login() {
             <div className="sent-box">
               <div className="sent-icon">✉️</div>
               <h2>Check your email</h2>
-              <p>We sent a login link to<br/><span className="email-highlight">{email}</span><br/><br/>Click the link to access your dashboard.</p>
+              <p>We sent a login link to<br/><span className="email-highlight">{email}</span><br/><br/>Click the link to continue.</p>
               <a href="/" className="back">← Back to home</a>
             </div>
           ) : (
             <>
-              <h1 className="title">Welcome back</h1>
-              <p className="sub">Enter your email and we'll send you<br/>a magic link to sign in.</p>
+              <h1 className="title">Get started free</h1>
+              <p className="sub">Enter your email to create your account<br/>or sign in — no password needed.</p>
               <form onSubmit={handleLogin}>
                 <div className="field">
                   <label className="label">Email</label>
