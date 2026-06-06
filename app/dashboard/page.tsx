@@ -61,7 +61,6 @@ export default function Dashboard() {
           .eq("monitor_id", monitorData.id)
           .order("detected_at", { ascending: false })
           .limit(20);
-
         setMentions(mentionData ?? []);
       }
 
@@ -100,6 +99,16 @@ export default function Dashboard() {
     setMentions(prev => prev.map(m => m.id === id ? { ...m, is_read: true } : m));
   };
 
+  const avgRisk = mentions.length > 0
+    ? Math.round(mentions.filter(m => m.risk_score !== null).reduce((a, m) => a + (m.risk_score ?? 0), 0) / mentions.filter(m => m.risk_score !== null).length)
+    : 0;
+
+  const thisWeek = mentions.filter(m => {
+    const d = new Date(m.detected_at);
+    const now = new Date();
+    return (now.getTime() - d.getTime()) < 7 * 24 * 60 * 60 * 1000;
+  }).length;
+
   if (loading) return (
     <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",background:"#fafaf9"}}>
       <div style={{color:"#b5b2ae",fontSize:"14px"}}>Loading...</div>
@@ -122,25 +131,27 @@ export default function Dashboard() {
         .logout-btn:hover{border-color:var(--ink);color:var(--ink);}
         .main{max-width:900px;margin:0 auto;padding:48px 40px;}
         .page-title{font-family:'Instrument Serif',serif;font-size:36px;letter-spacing:-1px;margin-bottom:6px;}
-        .page-sub{font-size:14px;color:var(--ink-2);margin-bottom:48px;font-weight:300;}
-        .onboarding{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px;max-width:560px;}
-        .onboarding-title{font-family:'Instrument Serif',serif;font-size:26px;letter-spacing:-0.5px;margin-bottom:8px;}
-        .onboarding-sub{font-size:14px;color:var(--ink-2);margin-bottom:32px;font-weight:300;line-height:1.6;}
-        .field{margin-bottom:20px;}
-        .label{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:8px;}
-        .input{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none;transition:all 0.2s;}
-        .input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,77,0,0.08);}
-        .input::placeholder{color:var(--ink-3);}
-        textarea.input{resize:none;min-height:72px;line-height:1.6;}
-        .hint{font-size:12px;color:var(--ink-3);margin-top:6px;}
-        .divider{display:flex;align-items:center;gap:12px;margin:20px 0;}
-        .divider-line{flex:1;height:1px;background:var(--border);}
-        .divider-label{font-size:12px;color:var(--ink-3);}
-        .submit{width:100%;padding:14px;background:var(--ink);color:white;border:none;border-radius:100px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.25s;margin-top:8px;}
-        .submit:hover:not(:disabled){background:var(--orange);transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,77,0,0.3);}
-        .submit:disabled{opacity:0.5;cursor:not-allowed;}
-        .error-msg{background:#fff5f5;border:1px solid rgba(255,0,0,0.15);border-radius:10px;padding:12px 16px;font-size:13px;color:#d32f2f;margin-top:12px;}
-        .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:40px;}
+        .page-sub{font-size:14px;color:var(--ink-2);margin-bottom:32px;font-weight:300;}
+
+        /* 통계 카드 */
+        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+        .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;}
+        .stat-card-label{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
+        .stat-card-value{font-family:'Instrument Serif',serif;font-size:40px;letter-spacing:-1px;color:var(--ink);line-height:1;}
+        .stat-card-value.red{color:var(--red);}
+        .stat-card-value.emerald{color:var(--emerald);}
+        .stat-card-sub{font-size:12px;color:var(--ink-3);margin-top:6px;}
+
+        /* 업그레이드 배너 */
+        .upgrade-banner{background:var(--ink);border-radius:16px;padding:24px 32px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;position:relative;overflow:hidden;}
+        .upgrade-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 0% 50%,rgba(255,77,0,0.2) 0%,transparent 60%);}
+        .upgrade-banner-text{position:relative;z-index:1;}
+        .upgrade-banner-title{font-size:15px;font-weight:500;color:white;margin-bottom:4px;}
+        .upgrade-banner-sub{font-size:13px;color:rgba(255,255,255,0.5);font-weight:300;}
+        .upgrade-banner-btn{position:relative;z-index:1;flex-shrink:0;background:var(--orange);color:white;font-size:13px;font-weight:500;padding:10px 20px;border-radius:100px;text-decoration:none;transition:all 0.2s;white-space:nowrap;}
+        .upgrade-banner-btn:hover{background:#ff6a1a;box-shadow:0 8px 24px rgba(255,77,0,0.4);}
+
+        .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:32px;}
         .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;}
         .card-label{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;}
         .keyword-list{display:flex;flex-wrap:wrap;gap:8px;}
@@ -172,10 +183,29 @@ export default function Dashboard() {
         .empty-icon{font-size:32px;margin-bottom:16px;}
         .empty-title{font-size:16px;font-weight:500;margin-bottom:8px;}
         .empty-sub{font-size:14px;color:var(--ink-2);font-weight:300;line-height:1.6;}
+        .onboarding{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px;max-width:560px;}
+        .onboarding-title{font-family:'Instrument Serif',serif;font-size:26px;letter-spacing:-0.5px;margin-bottom:8px;}
+        .onboarding-sub{font-size:14px;color:var(--ink-2);margin-bottom:32px;font-weight:300;line-height:1.6;}
+        .field{margin-bottom:20px;}
+        .label{display:block;font-size:13px;font-weight:500;color:var(--ink);margin-bottom:8px;}
+        .input{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none;transition:all 0.2s;}
+        .input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,77,0,0.08);}
+        .input::placeholder{color:var(--ink-3);}
+        textarea.input{resize:none;min-height:72px;line-height:1.6;}
+        .hint{font-size:12px;color:var(--ink-3);margin-top:6px;}
+        .divider{display:flex;align-items:center;gap:12px;margin:20px 0;}
+        .divider-line{flex:1;height:1px;background:var(--border);}
+        .divider-label{font-size:12px;color:var(--ink-3);}
+        .submit{width:100%;padding:14px;background:var(--ink);color:white;border:none;border-radius:100px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.25s;margin-top:8px;}
+        .submit:hover:not(:disabled){background:var(--orange);transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,77,0,0.3);}
+        .submit:disabled{opacity:0.5;cursor:not-allowed;}
+        .error-msg{background:#fff5f5;border:1px solid rgba(255,0,0,0.15);border-radius:10px;padding:12px 16px;font-size:13px;color:#d32f2f;margin-top:12px;}
         @media(max-width:768px){
           .nav{padding:0 20px;}
           .main{padding:32px 20px;}
+          .stats-grid{grid-template-columns:1fr;}
           .cards{grid-template-columns:1fr;}
+          .upgrade-banner{flex-direction:column;align-items:flex-start;}
         }
       `}</style>
 
@@ -226,6 +256,34 @@ export default function Dashboard() {
           <>
             <h1 className="page-title">Dashboard</h1>
             <p className="page-sub">Your monitor is active. Scanning HN every 5 minutes.</p>
+
+            {/* 통계 카드 */}
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="stat-card-label">Total Mentions</div>
+                <div className="stat-card-value">{mentions.length}</div>
+                <div className="stat-card-sub">All time</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-card-label">This Week</div>
+                <div className="stat-card-value emerald">{thisWeek}</div>
+                <div className="stat-card-sub">Last 7 days</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-card-label">Avg Risk Score</div>
+                <div className={`stat-card-value ${avgRisk >= 6 ? "red" : ""}`}>{avgRisk > 0 ? `${avgRisk}/10` : "—"}</div>
+                <div className="stat-card-sub">Across all mentions</div>
+              </div>
+            </div>
+
+            {/* 업그레이드 배너 */}
+            <div className="upgrade-banner">
+              <div className="upgrade-banner-text">
+                <div className="upgrade-banner-title">🚀 Unlock Reddit monitoring + AI reply drafts</div>
+                <div className="upgrade-banner-sub">Upgrade to Starter — $29/mo. Cancel anytime.</div>
+              </div>
+              <a href="/login?plan=starter" className="upgrade-banner-btn">Upgrade now →</a>
+            </div>
 
             <div className="cards">
               <div className="card">
