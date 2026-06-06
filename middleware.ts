@@ -28,6 +28,12 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user && request.nextUrl.pathname === "/login") {
+    const plan = request.nextUrl.searchParams.get("plan");
+    if (plan === "starter") {
+      return NextResponse.redirect("https://respondai.lemonsqueezy.com/checkout/buy/ef1471f2-9f62-4b95-a081-e2802c59964c");
+    } else if (plan === "pro") {
+      return NextResponse.redirect("https://respondai.lemonsqueezy.com/checkout/buy/db29bbf5-eac6-42c5-85f4-804eac772552");
+    }
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
