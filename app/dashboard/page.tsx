@@ -10,6 +10,7 @@ type Monitor = {
   keywords: string[];
   competitor_keywords: string[];
   slack_webhook: string;
+  plan: string;
 };
 
 type Mention = {
@@ -99,7 +100,7 @@ export default function Dashboard() {
     setMentions(prev => prev.map(m => m.id === id ? { ...m, is_read: true } : m));
   };
 
-  const avgRisk = mentions.length > 0
+  const avgRisk = mentions.filter(m => m.risk_score !== null).length > 0
     ? Math.round(mentions.filter(m => m.risk_score !== null).reduce((a, m) => a + (m.risk_score ?? 0), 0) / mentions.filter(m => m.risk_score !== null).length)
     : 0;
 
@@ -108,6 +109,10 @@ export default function Dashboard() {
     const now = new Date();
     return (now.getTime() - d.getTime()) < 7 * 24 * 60 * 60 * 1000;
   }).length;
+
+  const isPro = monitor?.plan === "pro";
+  const isStarter = monitor?.plan === "starter" || isPro;
+  const isFree = monitor?.plan === "free" || !monitor?.plan;
 
   if (loading) return (
     <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",background:"#fafaf9"}}>
@@ -127,13 +132,15 @@ export default function Dashboard() {
         .nav-logo span{color:var(--orange);font-style:italic;}
         .nav-right{display:flex;align-items:center;gap:16px;}
         .nav-email{font-size:13px;color:var(--ink-3);}
+        .plan-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:1px;}
+        .plan-badge.free{background:var(--bg);border:1px solid var(--border);color:var(--ink-3);}
+        .plan-badge.starter{background:#fff5f0;border:1px solid rgba(255,77,0,0.2);color:var(--orange);}
+        .plan-badge.pro{background:var(--ink);color:white;}
         .logout-btn{font-size:13px;color:var(--ink-2);background:none;border:1px solid var(--border);padding:7px 16px;border-radius:100px;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
         .logout-btn:hover{border-color:var(--ink);color:var(--ink);}
         .main{max-width:900px;margin:0 auto;padding:48px 40px;}
         .page-title{font-family:'Instrument Serif',serif;font-size:36px;letter-spacing:-1px;margin-bottom:6px;}
         .page-sub{font-size:14px;color:var(--ink-2);margin-bottom:32px;font-weight:300;}
-
-        /* 통계 카드 */
         .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
         .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;}
         .stat-card-label{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
@@ -141,8 +148,6 @@ export default function Dashboard() {
         .stat-card-value.red{color:var(--red);}
         .stat-card-value.emerald{color:var(--emerald);}
         .stat-card-sub{font-size:12px;color:var(--ink-3);margin-top:6px;}
-
-        /* 업그레이드 배너 */
         .upgrade-banner{background:var(--ink);border-radius:16px;padding:24px 32px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;position:relative;overflow:hidden;}
         .upgrade-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 0% 50%,rgba(255,77,0,0.2) 0%,transparent 60%);}
         .upgrade-banner-text{position:relative;z-index:1;}
@@ -150,7 +155,6 @@ export default function Dashboard() {
         .upgrade-banner-sub{font-size:13px;color:rgba(255,255,255,0.5);font-weight:300;}
         .upgrade-banner-btn{position:relative;z-index:1;flex-shrink:0;background:var(--orange);color:white;font-size:13px;font-weight:500;padding:10px 20px;border-radius:100px;text-decoration:none;transition:all 0.2s;white-space:nowrap;}
         .upgrade-banner-btn:hover{background:#ff6a1a;box-shadow:0 8px 24px rgba(255,77,0,0.4);}
-
         .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:32px;}
         .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;}
         .card-label{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;}
@@ -174,10 +178,12 @@ export default function Dashboard() {
         .score-badge.viral{background:rgba(5,150,105,0.08);color:var(--emerald);}
         .score-badge.platform{background:var(--bg);border:1px solid var(--border);color:var(--ink-3);}
         .mention-draft{background:#f8f9ff;border-left:2px solid #0066ff;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--ink-2);line-height:1.6;font-style:italic;margin-bottom:12px;}
+        .mention-draft-locked{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--ink-3);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
         .mention-actions{display:flex;gap:8px;}
         .action-btn{font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;cursor:pointer;transition:all 0.2s;text-decoration:none;border:1px solid var(--border);color:var(--ink-2);background:none;font-family:'DM Sans',sans-serif;}
         .action-btn.primary{background:var(--ink);color:white;border-color:var(--ink);}
         .action-btn.primary:hover{background:var(--orange);border-color:var(--orange);}
+        .action-btn.upgrade{background:var(--orange);color:white;border-color:var(--orange);}
         .action-btn:hover{border-color:var(--ink);color:var(--ink);}
         .empty-state{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:60px;text-align:center;}
         .empty-icon{font-size:32px;margin-bottom:16px;}
@@ -212,6 +218,11 @@ export default function Dashboard() {
       <nav className="nav">
         <a href="/" className="nav-logo">Respond<span>AI</span></a>
         <div className="nav-right">
+          {monitor && (
+            <span className={`plan-badge ${monitor.plan || 'free'}`}>
+              {monitor.plan || 'free'}
+            </span>
+          )}
           <span className="nav-email">{user?.email}</span>
           <button className="logout-btn" onClick={handleLogout}>Log out</button>
         </div>
@@ -257,7 +268,6 @@ export default function Dashboard() {
             <h1 className="page-title">Dashboard</h1>
             <p className="page-sub">Your monitor is active. Scanning HN every 5 minutes.</p>
 
-            {/* 통계 카드 */}
             <div className="stats-grid">
               <div className="stat-card">
                 <div className="stat-card-label">Total Mentions</div>
@@ -276,14 +286,25 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* 업그레이드 배너 */}
-            <div className="upgrade-banner">
-              <div className="upgrade-banner-text">
-                <div className="upgrade-banner-title">🚀 Unlock Reddit monitoring + AI reply drafts</div>
-                <div className="upgrade-banner-sub">Upgrade to Starter — $29/mo. Cancel anytime.</div>
+            {isFree && (
+              <div className="upgrade-banner">
+                <div className="upgrade-banner-text">
+                  <div className="upgrade-banner-title">🚀 Unlock Reddit monitoring + AI reply drafts</div>
+                  <div className="upgrade-banner-sub">Upgrade to Starter — $29/mo. Cancel anytime.</div>
+                </div>
+                <a href="/login?plan=starter" className="upgrade-banner-btn">Upgrade now →</a>
               </div>
-              <a href="/login?plan=starter" className="upgrade-banner-btn">Upgrade now →</a>
-            </div>
+            )}
+
+            {isStarter && !isPro && (
+              <div className="upgrade-banner">
+                <div className="upgrade-banner-text">
+                  <div className="upgrade-banner-title">⚡ Unlock unlimited keywords + weekly AI report</div>
+                  <div className="upgrade-banner-sub">Upgrade to Pro — $49/mo. Cancel anytime.</div>
+                </div>
+                <a href="/login?plan=pro" className="upgrade-banner-btn">Go Pro →</a>
+              </div>
+            )}
 
             <div className="cards">
               <div className="card">
@@ -356,16 +377,24 @@ export default function Dashboard() {
                   </div>
                   {expandedId === mention.id && (
                     <>
-                      {mention.ai_draft && (
-                        <div className="mention-draft">💬 {mention.ai_draft}</div>
+                      {isStarter ? (
+                        mention.ai_draft && (
+                          <div className="mention-draft">💬 {mention.ai_draft}</div>
+                        )
+                      ) : (
+                        <div className="mention-draft-locked">
+                          🔒 AI reply draft — <a href="/login?plan=starter" style={{color:"var(--orange)",textDecoration:"none",fontWeight:"500"}}>Upgrade to Starter</a> to unlock
+                        </div>
                       )}
                       <div className="mention-actions">
                         <a href={mention.post_url} target="_blank" rel="noreferrer" className="action-btn primary">
-                          Respond on HN →
+                          Respond on {mention.platform === 'reddit' ? 'Reddit' : 'HN'} →
                         </a>
-                        <button className="action-btn" onClick={e => { e.stopPropagation(); navigator.clipboard.writeText(mention.ai_draft); }}>
-                          Copy draft
-                        </button>
+                        {isStarter && mention.ai_draft && (
+                          <button className="action-btn" onClick={e => { e.stopPropagation(); navigator.clipboard.writeText(mention.ai_draft); }}>
+                            Copy draft
+                          </button>
+                        )}
                       </div>
                     </>
                   )}
