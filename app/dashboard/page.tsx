@@ -254,7 +254,18 @@ export default function Dashboard() {
                 <div className="field">
                   <label className="label">Slack Webhook URL</label>
                   <input className="input" type="url" value={slackWebhook} onChange={e => setSlackWebhook(e.target.value)} placeholder="https://hooks.slack.com/services/..." required/>
-                  <p className="hint">Get your webhook from <a href="https://api.slack.com/apps" target="_blank" rel="noreferrer" style={{color:"var(--orange)"}}>api.slack.com/apps</a></p>
+                  <div className="field">
+  <label className="label">Slack Webhook URL</label>
+  <input className="input" type="url" value={slackWebhook} onChange={e => setSlackWebhook(e.target.value)} placeholder="https://hooks.slack.com/services/..." required/>
+  <div style={{background:"var(--bg)",border:"1px solid var(--border)",borderRadius:"8px",padding:"12px 16px",marginTop:"8px",fontSize:"12px",color:"var(--ink-2)",lineHeight:"1.8"}}>
+    <div style={{fontWeight:"500",color:"var(--ink)",marginBottom:"6px"}}>📖 How to get your Slack Webhook URL:</div>
+    <div>1. Go to <a href="https://api.slack.com/apps" target="_blank" rel="noreferrer" style={{color:"var(--orange)"}}>api.slack.com/apps</a> → Create New App</div>
+    <div>2. Choose "From Scratch" → Name your app → Select workspace</div>
+    <div>3. Click "Incoming Webhooks" → Toggle Activate → Add New Webhook</div>
+    <div>4. Select the channel to receive alerts → Click Allow</div>
+    <div>5. Copy the Webhook URL and paste it above</div>
+  </div>
+</div>
                 </div>
                 <button className="submit" disabled={submitting}>
                   {submitting ? "Activating..." : "Activate Monitor →"}
